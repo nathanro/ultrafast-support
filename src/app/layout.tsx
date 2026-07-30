@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "UltraFast Support - WordPress Care & AI-Powered Services",
+  title: "UltraFast Support - WordPress Care & IT Services",
   description:
-    "Professional WordPress maintenance, security, and AI-powered development services. Keep your site fast, secure, and up-to-date.",
+    "Professional WordPress maintenance and AI-powered IT services. Keep your site fast, secure, and ahead of the curve.",
+  openGraph: {
+    title: "UltraFast Support",
+    description: "WordPress Care & AI-Powered IT Services",
+    images: ["/images/og-image.png"],
+  },
 };
 
 export default function RootLayout({
@@ -19,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-black text-white">
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-zinc-950 text-white">
         {children}
       </body>
     </html>
