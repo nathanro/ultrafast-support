@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Lightning, Globe, Robot, List, X } from '@phosphor-icons/react'
+import { Lightning, Globe, Robot, List, X, BookOpen } from '@phosphor-icons/react'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -61,6 +61,17 @@ export default function Navbar() {
               <Robot weight="fill" className="w-4 h-4" />
               IT & AI Services
             </Link>
+            <Link
+              href="/blog"
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                pathname.startsWith('/blog')
+                  ? 'bg-white/10 text-white font-semibold'
+                  : 'text-zinc-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <BookOpen weight="fill" className="w-4 h-4 text-emerald-400" />
+              Resources
+            </Link>
             <div className="w-px h-6 bg-white/10 mx-2" />
             <a
               href="#contact"
@@ -100,6 +111,16 @@ export default function Navbar() {
               >
                 <Robot weight="fill" className="w-4 h-4" />
                 IT & AI Services
+              </Link>
+              <Link
+                href="/blog"
+                className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
+                  pathname.startsWith('/blog') ? 'bg-white/10 text-white' : 'text-zinc-400'
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <BookOpen weight="fill" className="w-4 h-4" />
+                Resources
               </Link>
               <a
                 href="#contact"

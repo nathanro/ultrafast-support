@@ -87,16 +87,95 @@ export default function WPHero() {
 
           {/* Visual */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden glass-strong aspect-[3/2] bg-gradient-to-br from-emerald-900/50 to-cyan-900/50 flex items-center justify-center">
-              <div className="text-center p-8">
-                <ShieldCheck weight="fill" className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
-                <div className="text-2xl font-bold text-white mb-2">WordPress Dashboard</div>
-                <div className="text-zinc-400">Real-time monitoring &amp; analytics</div>
+            {/* Background glowing rings */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-3xl filter blur-3xl opacity-30 animate-pulse" />
+            
+            <div className="relative rounded-2xl border border-white/10 bg-zinc-950/80 backdrop-blur-md overflow-hidden p-6 shadow-2xl">
+              {/* Header of the mock browser/window */}
+              <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <span className="text-xs text-zinc-500 font-mono ml-2">https://dash.ultrafast.support</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    Secure & Optimized
+                  </span>
+                </div>
+              </div>
+
+              {/* Grid content inside browser */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Speed Score card */}
+                <div className="col-span-2 sm:col-span-1 rounded-xl bg-white/5 border border-white/5 p-4 flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-zinc-400">PageSpeed Performance</span>
+                    <Lightning weight="fill" className="w-4 h-4 text-amber-400" />
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-2">
+                    <span className="text-4xl font-extrabold text-gradient-wp">99</span>
+                    <span className="text-xs text-zinc-500">/100 (Mobile & Desktop)</span>
+                  </div>
+                  {/* Miniature graph */}
+                  <div className="h-8 w-full mt-4 flex items-end gap-1">
+                    {[30, 45, 35, 60, 50, 75, 90, 85, 95, 99].map((val, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ height: 0 }}
+                        animate={{ height: `${val}%` }}
+                        transition={{ duration: 0.8, delay: i * 0.05 }}
+                        className="flex-1 bg-gradient-to-t from-emerald-500 to-cyan-400 rounded-t-sm"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Uptime card */}
+                <div className="col-span-2 sm:col-span-1 rounded-xl bg-white/5 border border-white/5 p-4 flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-zinc-400">Service Uptime</span>
+                    <Clock weight="fill" className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div className="flex items-baseline gap-1 mt-2">
+                    <span className="text-3xl font-extrabold text-zinc-100">99.998%</span>
+                  </div>
+                  <div className="grid grid-cols-12 gap-0.5 mt-4">
+                    {Array.from({ length: 24 }).map((_, i) => (
+                      <div key={i} className="h-6 bg-emerald-500/20 border-t-2 border-emerald-400 rounded-sm" />
+                    ))}
+                  </div>
+                  <span className="text-[10px] text-zinc-500 mt-2 text-right">Last 30 days</span>
+                </div>
+
+                {/* Security feed */}
+                <div className="col-span-2 rounded-xl bg-white/5 border border-white/5 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-medium text-zinc-400">Live Protection Log</span>
+                    <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Active</span>
+                  </div>
+                  <div className="font-mono text-[11px] space-y-2 text-zinc-400">
+                    <div className="flex items-start gap-2">
+                      <span className="text-cyan-400">[08:42:15]</span>
+                      <span>Daily full backup successfully encrypted & uploaded to AWS S3.</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-400">[09:12:04]</span>
+                      <span>Malware scan complete. 0 threats detected across 14,285 files.</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-amber-400">[10:15:30]</span>
+                      <span>Plugin security updates applied: WooCommerce (v9.1.2) patched.</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -105,10 +184,10 @@ export default function WPHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="absolute -bottom-4 -left-4 glass rounded-full px-4 py-2 flex items-center gap-2"
+              className="absolute -bottom-4 -left-4 glass rounded-full px-4 py-2 flex items-center gap-2 border border-emerald-500/30"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-sm text-zinc-300">Monitoring active</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-xs text-zinc-300 font-medium">Monitoring active</span>
             </motion.div>
           </motion.div>
         </div>
