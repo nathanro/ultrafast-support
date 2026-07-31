@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, slug, excerpt, content, category, author, tags, publishedAt, readTime, faqs, citations } = body
+    const { title, slug, excerpt, content, category, author, tags, publishedAt, readTime, faqs, citations, aiScore, aiAnalysis } = body
 
     if (!title || !slug || !excerpt || !content || !category || !author) {
       return NextResponse.json({ error: 'Missing required blog post fields' }, { status: 400 })
@@ -28,7 +28,9 @@ export async function POST(request: NextRequest) {
       readTime: readTime || '4 min read',
       tags: tags || [],
       faqs,
-      citations
+      citations,
+      aiScore,
+      aiAnalysis
     }
 
     const success = addBlogPost(newPost)

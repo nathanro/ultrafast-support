@@ -3,11 +3,44 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { BookOpen, Calendar, ArrowRight, MagnifyingGlass, Tag } from '@phosphor-icons/react'
+import { BookOpen, Calendar, ArrowRight, MagnifyingGlass, Tag, Sparkle, Robot } from '@phosphor-icons/react'
 import type { BlogPost } from '@/lib/blog-store'
 
 interface BlogContentProps {
   initialPosts: BlogPost[]
+}
+
+const categoryThemes = {
+  wordpress: {
+    label: 'WordPress Care',
+    accent: 'text-emerald-400',
+    bg: 'bg-emerald-500/5',
+    border: 'border-emerald-500/30',
+    hover: 'hover:border-emerald-500/30',
+    chip: 'bg-emerald-500 text-zinc-950',
+    shadow: 'shadow-emerald-500/20',
+    ring: 'text-emerald-400'
+  },
+  'it-automation': {
+    label: 'IT & AI Automation',
+    accent: 'text-purple-400',
+    bg: 'bg-purple-500/5',
+    border: 'border-purple-500/30',
+    hover: 'hover:border-purple-500/30',
+    chip: 'bg-purple-500 text-white',
+    shadow: 'shadow-purple-500/20',
+    ring: 'text-purple-400'
+  },
+  conversion: {
+    label: 'Conversion & Growth',
+    accent: 'text-amber-400',
+    bg: 'bg-amber-500/5',
+    border: 'border-amber-500/30',
+    hover: 'hover:border-amber-500/30',
+    chip: 'bg-amber-500 text-zinc-950',
+    shadow: 'shadow-amber-500/20',
+    ring: 'text-amber-400'
+  }
 }
 
 export default function BlogContent({ initialPosts }: BlogContentProps) {
@@ -17,8 +50,9 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
   const filteredPosts = initialPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          post.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
-    
+                          post.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                          (post.aiAnalysis?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
+
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -59,7 +93,7 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
           >
             <span className="text-gradient-white">Authoritative</span>
             <br />
-            <span className="text-gradient-wp">Insights & Guides</span>
+            <span className="text-gradient-wp">Insights &amp; Guides</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -75,23 +109,28 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
         <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 rounded-2xl glass border border-white/5 bg-zinc-900/40">
           {/* Filters */}
           <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                  selectedCategory === cat.id
-                    ? cat.id === 'wordpress'
-                      ? 'bg-emerald-500 text-zinc-950 font-bold shadow-lg shadow-emerald-500/20'
-                      : cat.id === 'it-automation'
-                      ? 'bg-purple-500 text-white font-bold shadow-lg shadow-purple-500/20'
-                      : 'bg-white text-zinc-950 font-bold'
-                    : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const catTheme = cat.id === 'wordpress' ? 'emerald' : cat.id === 'it-automation' ? 'purple' : cat.id === 'conversion' ? 'amber' : 'white'
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                    selectedCategory === cat.id
+                      ? catTheme === 'emerald'
+                        ? 'bg-emerald-500 text-zinc-950 font-bold shadow-lg shadow-emerald-500/20'
+                        : catTheme === 'purple'
+                        ? 'bg-purple-500 text-white font-bold shadow-lg shadow-purple-500/20'
+                        : catTheme === 'amber'
+                        ? 'bg-amber-500 text-zinc-950 font-bold shadow-lg shadow-amber-500/20'
+                        : 'bg-white text-zinc-950 font-bold'
+                      : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              )
+            })}
           </div>
 
           {/* Search box */}
@@ -111,9 +150,9 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
         {filteredPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredPosts.map((post, index) => {
-              const isWP = post.category === 'wordpress'
-              const accentColor = isWP ? 'text-emerald-400' : 'text-purple-400'
-              const hoverBg = isWP ? 'hover:border-emerald-500/30' : 'hover:border-purple-500/30'
+              const theme = categoryThemes[post.category]
+              const aiScore = post.aiScore ?? 0
+              const hasAi = aiScore > 0 && post.aiAnalysis
 
               return (
                 <motion.article
@@ -121,14 +160,12 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`relative flex flex-col justify-between p-6 md:p-8 rounded-2xl glass border border-white/5 bg-zinc-950/40 cursor-pointer transition-all duration-300 ${hoverBg} group`}
+                  className={`relative flex flex-col justify-between p-6 md:p-8 rounded-2xl glass border border-white/5 bg-zinc-950/40 cursor-pointer transition-all duration-300 ${theme.hover} group`}
                 >
                   <div>
                     {/* Header meta */}
                     <div className="flex items-center justify-between mb-6">
-                      <span className={`text-[10px] font-bold tracking-widest uppercase border px-2.5 py-1 rounded-full ${
-                        isWP ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/5' : 'border-purple-500/30 text-purple-400 bg-purple-500/5'
-                      }`}>
+                      <span className={`text-[10px] font-bold tracking-widest uppercase border px-2.5 py-1 rounded-full ${theme.bg} ${theme.accent} ${theme.border}`}>
                         {post.category.replace('-', ' ')}
                       </span>
                       <div className="flex items-center gap-3 text-xs text-zinc-500 font-mono">
@@ -150,6 +187,20 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
                     <p className="text-zinc-400 text-sm mb-6 leading-relaxed">
                       {post.excerpt}
                     </p>
+
+                    {/* AI Recommendation tag */}
+                    {hasAi && (
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${theme.border} ${theme.bg} ${theme.accent} ${theme.shadow} shadow-sm`}>
+                          <Robot weight="fill" className="w-3.5 h-3.5" />
+                          AI Recommended: {aiScore}%
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[10px] text-zinc-500 uppercase tracking-wider">
+                          <Sparkle weight="fill" className={`w-3 h-3 ${theme.accent}`} />
+                          High relevance for {theme.label}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="border-t border-white/5 pt-6 mt-6 flex items-center justify-between">
@@ -166,7 +217,7 @@ export default function BlogContent({ initialPosts }: BlogContentProps) {
                       </div>
                     </div>
 
-                    <Link href={`/blog/${post.slug}`} className={`flex items-center gap-1 text-sm font-semibold ${accentColor}`}>
+                    <Link href={`/blog/${post.slug}`} className={`flex items-center gap-1 text-sm font-semibold ${theme.accent}`}>
                       <span>Read article</span>
                       <ArrowRight weight="bold" className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>

@@ -17,6 +17,8 @@ export interface BlogPost {
   tags: string[]
   faqs?: { question: string; answer: string }[]
   citations?: { title: string; url: string }[]
+  aiScore?: number
+  aiAnalysis?: string
 }
 
 const SEED_POSTS: BlogPost[] = [
@@ -33,6 +35,8 @@ const SEED_POSTS: BlogPost[] = [
     publishedAt: "2026-07-28",
     readTime: "6 min read",
     tags: ["WordPress", "Core Web Vitals", "Speed", "Security"],
+    aiScore: 96,
+    aiAnalysis: "This guide directly addresses the technical maintenance and Core Web Vitals gaps that cause enterprise WordPress sites to lose rankings and revenue. It is essential reading for operators who need measurable speed and security outcomes.",
     faqs: [
       {
         question: "Why does WordPress maintenance matter for SEO?",
@@ -103,6 +107,8 @@ With **UltraFast.support**, we configure and manage all of these components out 
     publishedAt: "2026-07-25",
     readTime: "5 min read",
     tags: ["AI Agents", "IT Support", "GoHighLevel", "Stripe"],
+    aiScore: 97,
+    aiAnalysis: "This article maps AI orchestration to real business outcomes: lead response time, calendar booking, and CRM integration. It is critical for teams evaluating workflow automation with measurable ROI.",
     faqs: [
       {
         question: "What is an AI Orchestrator?",

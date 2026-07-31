@@ -13,6 +13,8 @@ const ARTICLE_POOL = [
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80"
     },
     tags: ["WooCommerce", "WordPress", "Scaling", "Speed"],
+    aiScore: 98,
+    aiAnalysis: "This article connects WooCommerce architecture to measurable revenue outcomes: checkout latency, Redis object caching, and database hygiene. It is essential for store operators scaling past $1M in annual revenue who need sub-second checkout performance.",
     faqs: [
       {
         question: "How does WooCommerce database bloating happen?",
@@ -50,6 +52,8 @@ With **UltraFast.support**, WooCommerce maintenance is completely managed. We co
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80"
     },
     tags: ["Security", "WAF", "Cloudflare", "IT Infrastructure"],
+    aiScore: 95,
+    aiAnalysis: "This article maps edge security and WAF hardening to operational resilience. It is critical for organizations running high-traffic sites that need protection against automated attacks and zero-day exploits.",
     faqs: [
       {
         question: "What is a Web Application Firewall (WAF)?",
